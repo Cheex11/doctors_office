@@ -2,7 +2,7 @@ require 'pg'
 
 class Patient
 
-  attr_reader :name, :birthdate, :doctor_id
+  attr_reader :name, :birthdate, :doctor_id, :id
 
   def initialize(attributes)
     @name = attributes['name']
@@ -12,7 +12,6 @@ class Patient
 
   def self.create(attributes)
     patient = Patient.new(attributes)
-    puts patient
     patient.save
     patient
   end
@@ -30,23 +29,20 @@ class Patient
     patients
   end
 
-  def self.all_with_doctor
-    #results = DB.exec("SELECT * FROM patients;")
-     results = DB.exec("SELECT patients.id, patients.name, patients.birthdate, doctors.name AS doc_name
-                        FROM doctors LEFT JOIN patients ON patients.doctor_id = doctors.id")
-      # results = DB.exec("SELECT patients.id, patients.name, patients.birthdate, doctors.name AS doc_name
-      #                     FROM patients, doctors WHERE doctors.id = patients.doctor_id")
-
-    patients = []
-    results.each do |result|
-      puts result
-      patients << result
+  def doctor_name
+    if @doctor_id.to_i == 0
+      'no doctor'
+    else
+      result = DB.exec("SELECT name FROM doctors WHERE id = #{@doctor_id}")
+      result[0]['name']
     end
-    patients
   end
 
 
   def save
+    if !@doctor_id
+      @doctor_id = 0
+    end
     result = DB.exec("INSERT INTO patients (name, birthdate, doctor_id) values ('#{@name}', '#{@birthdate}', #{doctor_id}) RETURNING id;")
     @id = result.first['id']
   end

@@ -29,13 +29,17 @@ describe Patient do
     end
   end
 
-  describe 'self.doctor_name' do
+  describe 'doctor_name' do
     it 'should return the doctors name for a patient' do
-      patient = Patient.create({'name' => 'bob', 'birthdate' => '2000-01-01', 'doctor_id' => 1})
       doctor = Doctor.create({'name' => 'Dr. Pepper', 'specialty' => 'oncology'})
-      patients = Patient.all_with_doctor
-      puts patients[0]
-      patients[0]['doc_name'].should eq 'Dr. Pepper'
+      patient = Patient.create({'name' => 'bob', 'birthdate' => '2000-01-01', 'doctor_id' => doctor.id})
+      patient.doctor_name.should eq "Dr. Pepper"
+    end
+
+    it 'should return the doctors name for a patient' do
+      doctor = Doctor.create({'name' => 'Dr. Pepper', 'specialty' => 'oncology'})
+      patient = Patient.create({'name' => 'bob', 'birthdate' => '2000-01-01'})
+      patient.doctor_name.should eq "no doctor"
     end
   end
 

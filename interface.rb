@@ -5,6 +5,7 @@ require 'pg'
 DB = PG.connect(:dbname =>'doctors_office')
 
 def main_menu
+  system('clear')
   list_doctors
   puts ('press "add DOCTOR SPECIALTY" to add a doctor')
   puts ('press "v #" to view a doctor')
@@ -16,6 +17,7 @@ def main_menu
   if input[0] == 'add'
     input.shift
     add_doctor(input[0], input[1])
+
   elsif input[0] == 'delete'
     input.shift
     DB.exec("DELETE FROM doctors WHERE name = '#{input[0]}';")
@@ -35,17 +37,45 @@ end
 def list_doctors
   docs = Doctor.all
   docs.each do |doc|
-    puts "#{doc.name}: #{doc.specialty}"
+    puts "#{doc.name}: #{doc.specialty}.  ID = #{doc.id}"
   end
 end
 
 def add_doctor(name, specialty)
-  new_doctor = Doctor.create({:name => name, :specialty => specialty})
+  new_doctor = Doctor.create({'name' => name,'specialty' => specialty})
   main_menu
 end
 
 def patient_menu
-  patients = Patients.all_with_doctor
+  patients = Patient.all
   patients.each do |patient|
-    puts "#{patient.id} => #{patient.name}'s Birthdate: #{patient.dob}, Doctor: #{patient.doctor}"
+    # puts (patient.doctor_id)
+    puts "#{patient.id} => #{patient.name}'s Birthdate: #{patient.birthdate}, Doctor: #{patient.doctor_name}"
+  end
+
+  puts ("press 'a' to add a patient")
+  puts ("press 'm' to return to the main menu")
+  input = gets.chomp
+
+  if input == 'a'
+    add_patient_menu
+  elsif input == 'm'
+    main_menu
+  end
+
+end
+
+def add_patient_menu
+  puts ("What is the patient's name?")
+  new_patient_name = gets.chomp
+  puts ("What is the patient's birthdate?")
+  new_patient_birthdate = gets.chomp
+  puts ("What is the new patient's doctor's ID?")
+  new_patient_doctor_id = gets.chomp.to_i
+  Patient.create({'name' => new_patient_name, 'birthdate' => new_patient_birthdate, 'doctor_id' => new_patient_doctor_id})
+  patient_menu
+end
+
+
+
     main_menu
