@@ -18,24 +18,24 @@ describe 'doctor'  do
   end
 
   it 'is initialized with a name and specialty' do
-    doctor = Doctor.new({:name => 'Dr. Pepper', :specialty => 'obgyn'})
+    doctor = Doctor.new({'name' => 'Dr. Pepper', 'specialty' => 'obgyn'})
     doctor.should be_an_instance_of Doctor
   end
   it 'has a name and specialty' do
-    doctor = Doctor.new({:name => 'Dr. Pepper', :specialty => 'obgyn'})
+    doctor = Doctor.new({'name' => 'Dr. Pepper', 'specialty' => 'obgyn'})
     doctor.specialty.should eql 'obgyn'
   end
   describe 'Doctor.all' do
     it 'should list all the doctors' do
       docs = []
-      docs << Doctor.create({:name => 'Dr. Pepper', :specialty => 'proc'})
-      docs << Doctor.create({:name => 'Dr. Salt', :specialty => 'obgyn'})
+      docs << Doctor.create({'name' => 'Dr. Pepper', 'specialty' => 'proc'})
+      docs << Doctor.create({'name' => 'Dr. Salt', 'specialty' => 'obgyn'})
       Doctor.all.should eq docs
     end
   end
   describe 'Doctor.create' do
     it 'should create a Doctor object' do
-      doc = Doctor.create({:name => 'Doctor Doo Little', :specialty => 'Pathologist'})
+      doc = Doctor.create({'name' => 'Doctor Doo Little', 'specialty' => 'Pathologist'})
       doc.id.should be_an_instance_of Fixnum
     end
   end

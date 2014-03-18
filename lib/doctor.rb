@@ -5,9 +5,9 @@ class Doctor
   attr_reader :id, :name, :specialty, :doctors
 
   def initialize(attributes)
-    @name = attributes[:name]
-    @specialty = attributes[:specialty]
-    @id = attributes[:id]
+    @name = attributes['name']
+    @specialty = attributes['specialty']
+    @id = attributes['id']
   end
 
   def self.create(attributes)
@@ -20,18 +20,11 @@ class Doctor
     results = DB.exec("SELECT * FROM doctors;")
     doctors = []
     results.each do |result|
-      puts('something')
-
-      # atts[:id] = result['id']
-      # atts[:name] = result['name']
-      # atts[:specialty] = result['specialty']
-      # puts (atts)
-      # doctors << Doctor.new(atts)
-
-      name = result['name']
-      specialty = result['specialty']
-      id = result['id'].to_i
-      doctors << Doctor.new({:name => name, :specialty => specialty, :id => id})
+      # puts result
+      # name = result['name']
+      # specialty = result['specialty']
+      # id = result['id'].to_i
+      doctors << Doctor.new(result)
     end
     doctors
   end
