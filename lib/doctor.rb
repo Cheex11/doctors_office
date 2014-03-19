@@ -34,8 +34,20 @@ class Doctor
     @id = result.first['id'].to_i
   end
 
+  def add_insurance(provider)
+    insurance_id = DB.exec("SELECT id FROM insurance_companies WHERE insurance = '#{provider}'")
+
+    DB.exec("INSERT INTO doctors (accepts) values ('#{insurance_id[0]}');")
+    provider
+  end
+
   def ==(another_list)
     self.name == another_list.name
+  end
+
+  def self.get_doctor_by_name(name)
+    result = DB.exec("SELECT * FROM doctors WHERE name = '#{name}'")
+    result[0]
   end
 
 end

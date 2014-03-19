@@ -8,7 +8,7 @@ def main_menu
   system('clear')
   list_doctors
   puts ('press "add DOCTOR SPECIALTY" to add a doctor')
-  puts ('press "v #" to view a doctor')
+  puts ('press "v name" to view a doctor')
   puts ('press "delete DOCTOR_NAME" to delete a doctor')
   puts ('press "x" to exit')
   puts ('press "p" to see Patients')
@@ -24,6 +24,8 @@ def main_menu
     main_menu
   elsif input[0] == 'x'
     puts 'exiting'
+  elsif input[0] == 'v'
+    view_doctor(input[1])
   elsif input[0] = 'p'
     system('clear')
     patient_menu
@@ -62,7 +64,26 @@ def patient_menu
   elsif input == 'm'
     main_menu
   end
+end
 
+def view_doctor(doctor_name)
+  system('clear')
+  doctor = Doctor.get_doctor_by_name(doctor_name)
+  puts (doctor['name'] + ':')
+
+
+
+  puts ('accepts:')
+  puts ('specializes in:')
+  puts ('patients:')
+    # list_patients(doctor_name)
+
+  # puts ("press 'a' to add insurance information for this doctor")
+  # input = gets.chomp
+  # puts ("What insurance does this doctor accept?")
+  # input = gets.chomp
+  #   DOCTOR.add_insurance_informaiton(input)
+  # main_menu
 end
 
 def add_patient_menu
